@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institutional Certificate Verification</title>
+    <style>
+        :root {
+            --primary-color: #0d2137;
+            --accent-color: #c5a059;
+            --success-bg: #e8f5e9;
+            --success-text: #2e7d32;
+            --error-bg: #ffebee;
+            --error-text: #c62828;
+            --text-main: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 700px;
+            padding: clamp(25px, 6vw, 50px);
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-top: 6px solid var(--primary-color);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: clamp(1.1rem, 4vw, 1.6rem);
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            line-height: 1.5;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            background-color: #fcfcfc;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        button:hover {
+            background-color: #1a3a5a;
+            box-shadow: 0 5px 15px rgba(13, 33, 55, 0.2);
+        }
+
+        #result-area {
+            margin-top: 40px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .badge-verified { background: var(--success-bg); color: var(--success-text); }
+        .badge-error { background: var(--error-bg); color: var(--error-text); }
+
+        .certificate-img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer-info {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.8rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <h1>Inquiry Regarding the Issuance Status of Participation Certificates for Workshops and Seminars</h1>
+    
+    <div class="form-group">
+        <input type="text" id="codeField" placeholder="Enter Reference Code" autocomplete="off">
+        <button onclick="verifyCode()">Search Record</button>
+    </div>
+
+    <div id="result-area"></div>
+
+    <div class="footer-info">
+        Verified Digital Credential System
+    </div>
+</div>
+
+<script>
+    function verifyCode() {
+        const userInput = document.getElementById('codeField').value.trim();
+        const resultArea = document.getElementById('result-area');
+        
+        // پاک کردن محتوای قبلی
+        resultArea.innerHTML = '';
+
+        if (userInput === "01427") {
+            showImage("https://uploadkon.ir/uploads/d62825_25asm-cer.png");
+        } 
+        else if (userInput === "03267") {
+            showImage("https://uploadkon.ir/uploads/59de26_25asm-cer.png");
+        } 
+        else if (userInput === "") {
+            showError("Please enter a certificate reference code.");
+        } 
+        else {
+            showError("No records found for the entered reference number.");
+        }
+    }
+
+    function showImage(url) {
+        const resultArea = document.getElementById('result-area');
+        resultArea.innerHTML = `
+            <div class="status-badge badge-verified">✓ Record Verified & Found</div>
+            <br>
+            <img src="${url}" class="certificate-img" alt="Official Certificate">
+        `;
+    }
+
+    function showError(message) {
+        const resultArea = document.getElementById('result-area');
+        resultArea.innerHTML = `
+            <div class="status-badge badge-error">✕ Error</div>
+            <p style="color: #666; font-size: 0.95rem;">${message}</p>
+        `;
+    }
+
+    // فراهم کردن امکان زدن دکمه Enter برای جستجو
+    document.getElementById('codeField').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            verifyCode();
+        }
+    });
+</script>
+
+</body>
+</html>
